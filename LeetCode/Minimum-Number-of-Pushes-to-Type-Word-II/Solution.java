@@ -7,13 +7,13 @@
 7            freq[c - 'a']++;
 8        }
 9        
-10        // Sort frequencies in ascending order
+10
 11        Arrays.sort(freq);
 12        
 13        int totalPushes = 0;
 14        int distinctChars = 0;
 15        
-16        // Process characters from highest frequency to lowest
+16        
 17        for (int i = 25; i >= 0; i--) {
 18            if (freq[i] == 0) {
 19                break;
