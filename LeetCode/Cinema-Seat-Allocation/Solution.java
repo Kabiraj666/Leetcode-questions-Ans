@@ -1,31 +1,26 @@
-1import java.util.*;
-2
-3class Solution {
-4    public int maxNumberOfFamilies(int n, int[][] reservedSeats) {
-5        Map<Integer, Integer> map = new HashMap<>();
-6
-7        for (int[] seat : reservedSeats) {
-8            int row = seat[0];
-9            int col = seat[1];
-10            map.put(row, map.getOrDefault(row, 0) | (1 << col));
-11        }
-12
-13        int answer = (n - map.size()) * 2;
-14
-15        int left = (1 << 2) | (1 << 3) | (1 << 4) | (1 << 5);
-16        int middle = (1 << 4) | (1 << 5) | (1 << 6) | (1 << 7);
-17        int right = (1 << 6) | (1 << 7) | (1 << 8) | (1 << 9);
-18
-19        for (int reserved : map.values()) {
-20            if ((reserved & left) == 0 && (reserved & right) == 0) {
-21                answer += 2;
-22            } else if ((reserved & left) == 0 ||
-23                       (reserved & middle) == 0 ||
-24                       (reserved & right) == 0) {
-25                answer += 1;
-26            }
-27        }
-28
-29        return answer;
-30    }
-31}
+class Solution:
+    def maxNumberOfFamilies(self, n: int, reservedSeats: List[List[int]]) -> int:
+        
+        reservedSeats.sort()
+        i = 0
+        cnt = 0
+        for row in range(1, n+1):
+            if i == len(reservedSeats): 
+                cnt += 2 * (n - row + 1)
+                break
+            elif reservedSeats[i][0] > row:
+                cnt += 2
+            else:
+                g1 = g2 = g3 = True
+                while i < len(reservedSeats) and reservedSeats[i][0] == row:
+                    seat = reservedSeats[i][1]
+                    i += 1
+                    if 2 <= seat <= 5: g1 = False
+                    if 4 <= seat <= 7: g2 = False
+                    if 6 <= seat <= 9: g3 = False
+                if g1 and g3:
+                    cnt += 2
+                elif g1 or g2 or g3:
+                    cnt += 1
+        return cnt
+            
